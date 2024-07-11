@@ -1,75 +1,449 @@
-<!DOCTYPE html>
-<html lang="es">
-    
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¿Usted es Gay?</title>
-    <style>
-       body {
-    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Bandera_gay_Argentina.PNG/640px-Bandera_gay_Argentina.PNG');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-        }
-        h1 {
-            font-size: 24px;
-        }
-        .button-container {
-            display: flex;
-            justify-content: center;
-        }
-        #siButton, #noButton {
-            
-            font-size: 20px;
-            padding: 10px 20px;
-            position: relative; /* Añade posición relativa para permitir z-index */
-        }
-        #noButton {
-            margin-left: 20px;
-            transition: transform 0.5s;
-            z-index: 1; /* Establece un índice z para el botón "No" */
-        }
-    </style>
+<html><head><base href="https://websim.ai">
+<title>Number Clicker - Modern Incremental Game</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&amp;display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a73e8;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  .subtitle {
+    font-size: 1rem;
+    color: #5f6368;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  .game-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+  }
+  .box {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    transition: all 0.3s ease;
+  }
+  .box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  #counter {
+    font-size: 5rem;
+    font-weight: 700;
+    color: #202124;
+    text-align: center;
+    margin: 1.5rem 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  }
+  button {
+    background-color: #1a73e8;
+    color: #ffffff;
+    border: none;
+    border-radius: 24px;
+    padding: 0.75rem 1.5rem;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0.5rem 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    text-transform: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  button:hover {
+    background-color: #1765cc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+  }
+  #clickButton {
+    box-shadow: 0 4px 6px rgba(26, 115, 232, 0.3);
+    transition: all 0.3s ease, box-shadow 0.3s ease;
+  }
+  #clickButton:hover {
+    box-shadow: 0 6px 12px rgba(26, 115, 232, 0.5), 0 0 20px rgba(26, 115, 232, 0.4);
+  }
+  .upgrade-info {
+    font-size: 0.9rem;
+    color: #5f6368;
+    margin-top: 0.25rem;
+    text-align: center;
+  }
+  #rebirthButton {
+    background-color: #34a853;
+    font-size: 1.2rem;
+    padding: 1rem 2rem;
+    margin-top: 2rem;
+  }
+  #rebirthButton:hover {
+    background-color: #2d9249;
+  }
+  #rebirthInfo {
+    font-size: 1rem;
+    color: #34a853;
+    margin-top: 0.5rem;
+    text-align: center;
+    font-weight: 500;
+  }
+  @keyframes clickPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  .clicked {
+    animation: clickPulse 0.3s ease-out;
+  }
+  .upgrade-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .upgrade-box {
+    width: 48%;
+    margin-bottom: 1rem;
+  }
+</style>
 </head>
 <body>
-    <h1>¿Usted es Gay?</h1>
-    <div class="button-container">
-    <a href="paginab.html">
-        <button id="siButton" >Sí</button> 
-    </a> 
-        <button id="noButton">No</button>
+<h1>Number Clicker</h1>
+<div class="subtitle">A Modern Incremental Game</div>
+<div class="game-container">
+  <div class="box">
+    <div id="counter">1</div>
+    <button id="clickButton" class="clicked">Click to Increment</button>
+    <button id="rebirthButton">Rebirth (3000 clicks)</button>
+    <div id="rebirthInfo">Rebirth Bonus: +0 per click</div>
+  </div>
+  <div class="box upgrade-container">
+    <div class="upgrade-box">
+      <button id="autoClickerUpgrade">Buy Auto-Clicker (10 numbers)</button>
+      <div id="autoClickerInfo" class="upgrade-info">Auto-Clickers: 0</div>
     </div>
+    <div class="upgrade-box">
+      <button id="clickMultiplierUpgrade">Buy Number Multiplier (30 numbers)</button>
+      <div id="clickMultiplierInfo" class="upgrade-info">Number Multiplier: 1x</div>
+    </div>
+    <div class="upgrade-box">
+      <button id="slowClickerUpgrade">Buy Slow Clicker (50 numbers)</button>
+      <div id="slowClickerInfo" class="upgrade-info">Slow Clickers: 0</div>
+    </div>
+    <div class="upgrade-box">
+      <button id="fastClickerUpgrade">Buy Fast Clicker (100 numbers)</button>
+      <div id="fastClickerInfo" class="upgrade-info">Fast Clickers: 0</div>
+    </div>
+    <div class="upgrade-box">
+      <button id="ultraClickerUpgrade">Buy Ultra Clicker (200 numbers)</button>
+      <div id="ultraClickerInfo" class="upgrade-info">Ultra Clickers: 0</div>
+    </div>
+    <div class="upgrade-box">
+      <button id="hyperClickerUpgrade">Buy Hyper Clicker (400 numbers)</button>
+      <div id="hyperClickerInfo" class="upgrade-info">Hyper Clickers: 0</div>
+    </div>
+    <div class="upgrade-box">
+      <button id="quantumClickerUpgrade">Buy Quantum Clicker (1000 numbers)</button>
+      <div id="quantumClickerInfo" class="upgrade-info">Quantum Clickers: 0</div>
+    </div>
+    <div class="upgrade-box">
+      <button id="timeWarpUpgrade">Buy Time Warp (5000 numbers)</button>
+      <div id="timeWarpInfo" class="upgrade-info">Time Warps: 0</div>
+    </div>
+  </div>
+</div>
 
-    <script>
-        const noButton = document.getElementById("noButton");
-        const siButton = document.getElementById("siButton");
+<script>
+  let count = 1;
+  let autoClickers = 0;
+  let clickMultiplier = 1;
+  let slowClickers = 0;
+  let fastClickers = 0;
+  let ultraClickers = 0;
+  let hyperClickers = 0;
+  let quantumClickers = 0;
+  let timeWarps = 0;
+  let autoClickerPrice = 10;
+  let clickMultiplierPrice = 30;
+  let slowClickerPrice = 50;
+  let fastClickerPrice = 100;
+  let ultraClickerPrice = 200;
+  let hyperClickerPrice = 400;
+  let quantumClickerPrice = 1000;
+  let timeWarpPrice = 5000;
+  let rebirthBonus = 0;
+  let rebirthCost = 3000;
 
-        noButton.addEventListener("click", () => {
-            const maxOffset = 50;
-            let randomX, randomY;
-            
-            do {
-                randomX = Math.random() * (2 * maxOffset) - maxOffset;
-                randomY = Math.random() * (2 * maxOffset) - maxOffset;
-            } while (isOverlap(noButton, siButton, randomX, randomY));
-            
-            noButton.style.transform = `translate(${randomX}px, ${randomY}px)`;
-        });
+  const counter = document.getElementById('counter');
+  const clickButton = document.getElementById('clickButton');
+  const rebirthButton = document.getElementById('rebirthButton');
+  const rebirthInfo = document.getElementById('rebirthInfo');
+  const autoClickerUpgrade = document.getElementById('autoClickerUpgrade');
+  const clickMultiplierUpgrade = document.getElementById('clickMultiplierUpgrade');
+  const slowClickerUpgrade = document.getElementById('slowClickerUpgrade');
+  const fastClickerUpgrade = document.getElementById('fastClickerUpgrade');
+  const ultraClickerUpgrade = document.getElementById('ultraClickerUpgrade');
+  const hyperClickerUpgrade = document.getElementById('hyperClickerUpgrade');
+  const quantumClickerUpgrade = document.getElementById('quantumClickerUpgrade');
+  const timeWarpUpgrade = document.getElementById('timeWarpUpgrade');
+  const autoClickerInfo = document.getElementById('autoClickerInfo');
+  const clickMultiplierInfo = document.getElementById('clickMultiplierInfo');
+  const slowClickerInfo = document.getElementById('slowClickerInfo');
+  const fastClickerInfo = document.getElementById('fastClickerInfo');
+  const ultraClickerInfo = document.getElementById('ultraClickerInfo');
+  const hyperClickerInfo = document.getElementById('hyperClickerInfo');
+  const quantumClickerInfo = document.getElementById('quantumClickerInfo');
+  const timeWarpInfo = document.getElementById('timeWarpInfo');
 
-        // Función para verificar si hay superposición entre dos elementos
-        function isOverlap(elem1, elem2, offsetX, offsetY) {
-            const rect1 = elem1.getBoundingClientRect();
-            const rect2 = elem2.getBoundingClientRect();
-            
-            return (
-                rect1.left + offsetX < rect2.right &&
-                rect1.right + offsetX > rect2.left &&
-                rect1.top + offsetY < rect2.bottom &&
-                rect1.bottom + offsetY > rect2.top
-            );
-        }
-    </script>
-</body>
-</html>
+  clickButton.addEventListener('click', () => {
+    count += (clickMultiplier + rebirthBonus) * (timeWarps + 1);
+    updateCounter();
+    createClickEffect(event);
+    clickButton.classList.add('clicked');
+    setTimeout(() => {
+      clickButton.classList.remove('clicked');
+    }, 300);
+  });
+
+  rebirthButton.addEventListener('click', () => {
+    if (count >= rebirthCost) {
+      rebirthBonus += 2;
+      rebirthCost = Math.floor(rebirthCost * 1.25);
+      resetGame();
+      updateRebirthInfo();
+    }
+  });
+
+  autoClickerUpgrade.addEventListener('click', () => {
+    if (count >= autoClickerPrice) {
+      count -= autoClickerPrice;
+      autoClickers++;
+      autoClickerPrice = Math.floor(autoClickerPrice * 1.5);
+      updateCounter();
+      updateAutoClickerUpgrade();
+    }
+  });
+
+  clickMultiplierUpgrade.addEventListener('click', () => {
+    if (count >= clickMultiplierPrice) {
+      count -= clickMultiplierPrice;
+      clickMultiplier++;
+      clickMultiplierPrice = Math.floor(clickMultiplierPrice * 1.5);
+      updateCounter();
+      updateClickMultiplierUpgrade();
+    }
+  });
+
+  slowClickerUpgrade.addEventListener('click', () => {
+    if (count >= slowClickerPrice) {
+      count -= slowClickerPrice;
+      slowClickers++;
+      slowClickerPrice = Math.floor(slowClickerPrice * 1.5);
+      updateCounter();
+      updateSlowClickerUpgrade();
+    }
+  });
+
+  fastClickerUpgrade.addEventListener('click', () => {
+    if (count >= fastClickerPrice) {
+      count -= fastClickerPrice;
+      fastClickers++;
+      fastClickerPrice = Math.floor(fastClickerPrice * 1.5);
+      updateCounter();
+      updateFastClickerUpgrade();
+    }
+  });
+
+  ultraClickerUpgrade.addEventListener('click', () => {
+    if (count >= ultraClickerPrice) {
+      count -= ultraClickerPrice;
+      ultraClickers++;
+      ultraClickerPrice = Math.floor(ultraClickerPrice * 1.5);
+      updateCounter();
+      updateUltraClickerUpgrade();
+    }
+  });
+
+  hyperClickerUpgrade.addEventListener('click', () => {
+    if (count >= hyperClickerPrice) {
+      count -= hyperClickerPrice;
+      hyperClickers++;
+      hyperClickerPrice = Math.floor(hyperClickerPrice * 2);
+      updateCounter();
+      updateHyperClickerUpgrade();
+    }
+  });
+
+  quantumClickerUpgrade.addEventListener('click', () => {
+    if (count >= quantumClickerPrice) {
+      count -= quantumClickerPrice;
+      quantumClickers++;
+      quantumClickerPrice = Math.floor(quantumClickerPrice * 2.5);
+      updateCounter();
+      updateQuantumClickerUpgrade();
+    }
+  });
+
+  timeWarpUpgrade.addEventListener('click', () => {
+    if (count >= timeWarpPrice) {
+      count -= timeWarpPrice;
+      timeWarps++;
+      timeWarpPrice = Math.floor(timeWarpPrice * 3);
+      updateCounter();
+      updateTimeWarpUpgrade();
+    }
+  });
+
+  function updateCounter() {
+    counter.textContent = Math.floor(count).toLocaleString();
+  }
+
+  function updateRebirthInfo() {
+    rebirthInfo.textContent = `Rebirth Bonus: +${rebirthBonus} per click`;
+    rebirthButton.textContent = `Rebirth (${rebirthCost.toLocaleString()} clicks)`;
+  }
+
+  function resetGame() {
+    count = 0;
+    autoClickers = 0;
+    clickMultiplier = 1;
+    slowClickers = 0;
+    fastClickers = 0;
+    ultraClickers = 0;
+    hyperClickers = 0;
+    quantumClickers = 0;
+    timeWarps = 0;
+    autoClickerPrice = 10;
+    clickMultiplierPrice = 30;
+    slowClickerPrice = 50;
+    fastClickerPrice = 100;
+    ultraClickerPrice = 200;
+    hyperClickerPrice = 400;
+    quantumClickerPrice = 1000;
+    timeWarpPrice = 5000;
+    
+    updateCounter();
+    updateAutoClickerUpgrade();
+    updateClickMultiplierUpgrade();
+    updateSlowClickerUpgrade();
+    updateFastClickerUpgrade();
+    updateUltraClickerUpgrade();
+    updateHyperClickerUpgrade();
+    updateQuantumClickerUpgrade();
+    updateTimeWarpUpgrade();
+    updateRebirthInfo();
+  }
+
+  function updateAutoClickerUpgrade() {
+    autoClickerUpgrade.textContent = `Buy Auto-Clicker (${autoClickerPrice.toLocaleString()} numbers)`;
+    autoClickerInfo.textContent = `Auto-Clickers: ${autoClickers}`;
+  }
+
+  function updateClickMultiplierUpgrade() {
+    clickMultiplierUpgrade.textContent = `Buy Number Multiplier (${clickMultiplierPrice.toLocaleString()} numbers)`;
+    clickMultiplierInfo.textContent = `Number Multiplier: ${clickMultiplier}x`;
+  }
+
+  function updateSlowClickerUpgrade() {
+    slowClickerUpgrade.textContent = `Buy Slow Clicker (${slowClickerPrice.toLocaleString()} numbers)`;
+    slowClickerInfo.textContent = `Slow Clickers: ${slowClickers}`;
+  }
+
+  function updateFastClickerUpgrade() {
+    fastClickerUpgrade.textContent = `Buy Fast Clicker (${fastClickerPrice.toLocaleString()} numbers)`;
+    fastClickerInfo.textContent = `Fast Clickers: ${fastClickers}`;
+  }
+
+  function updateUltraClickerUpgrade() {
+    ultraClickerUpgrade.textContent = `Buy Ultra Clicker (${ultraClickerPrice.toLocaleString()} numbers)`;
+    ultraClickerInfo.textContent = `Ultra Clickers: ${ultraClickers}`;
+  }
+
+  function updateHyperClickerUpgrade() {
+    hyperClickerUpgrade.textContent = `Buy Hyper Cl icker (${hyperClickerPrice.toLocaleString()} numbers)`;
+    hyperClickerInfo.textContent = `Hyper Clickers: ${hyperClickers}`;
+  }
+
+  function updateQuantumClickerUpgrade() {
+    quantumClickerUpgrade.textContent = `Buy Quantum Clicker (${quantumClickerPrice.toLocaleString()} numbers)`;
+    quantumClickerInfo.textContent = `Quantum Clickers: ${quantumClickers}`;
+  }
+
+  function updateTimeWarpUpgrade() {
+    timeWarpUpgrade.textContent = `Buy Time Warp (${timeWarpPrice.toLocaleString()} numbers)`;
+    timeWarpInfo.textContent = `Time Warps: ${timeWarps}`;
+  }
+
+  function createClickEffect(event) {
+    const effect = document.createElement('div');
+    effect.innerText = '+' + ((clickMultiplier + rebirthBonus) * (timeWarps + 1));
+    effect.style.position = 'absolute';
+    effect.style.left = event.clientX + 'px';
+    effect.style.top = event.clientY + 'px';
+    effect.style.pointerEvents = 'none';
+    effect.style.animation = 'moveUp 0.5s ease-out';
+    effect.style.color = '#1a73e8';
+    effect.style.fontWeight = 'bold';
+    document.body.appendChild(effect);
+    setTimeout(() => {
+      document.body.removeChild(effect);
+    }, 500);
+  }
+
+  setInterval(() => {
+    count += autoClickers * (1 + rebirthBonus) * (timeWarps + 1);
+    updateCounter();
+  }, 1000);
+
+  setInterval(() => {
+    count += slowClickers * (1 + rebirthBonus) * (timeWarps + 1);
+    updateCounter();
+  }, 3000);
+
+  setInterval(() => {
+    count += fastClickers * 2 * (1 + rebirthBonus) * (timeWarps + 1);
+    updateCounter();
+  }, 500);
+
+  setInterval(() => {
+    count += ultraClickers * 0.5 * (1 + rebirthBonus) * (timeWarps + 1);
+    updateCounter();
+  }, 125);
+
+  setInterval(() => {
+    count += hyperClickers * (1 + rebirthBonus) * (timeWarps + 1);
+    updateCounter();
+  }, 75);
+
+  setInterval(() => {
+    count += quantumClickers * 5 * (1 + rebirthBonus) * (timeWarps + 1);
+    updateCounter();
+  }, 1000);
+
+  updateAutoClickerUpgrade();
+  updateClickMultiplierUpgrade();
+  updateSlowClickerUpgrade();
+  updateFastClickerUpgrade();
+  updateUltraClickerUpgrade();
+  updateHyperClickerUpgrade();
+  updateQuantumClickerUpgrade();
+  updateTimeWarpUpgrade();
+  updateRebirthInfo();
+</script>
+</body></html>
